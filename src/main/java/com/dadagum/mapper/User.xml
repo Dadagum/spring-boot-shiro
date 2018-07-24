@@ -7,4 +7,8 @@
     <select id="getUsers" resultType="User">
         SELECT * FROM users
     </select>
+
+    <select id="getUser" resultType="User">
+        SELECT * FROM users WHERE username=#{username}
+    </select>
 </mapper>
