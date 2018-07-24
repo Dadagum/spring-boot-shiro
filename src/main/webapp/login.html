@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="style/layout.css">
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <div id="root">
+        <div id="login-box">
+            <div id="login-lable">Login</div>
+            <div class="input-group">
+                <input type="text" class="name-field" class="form-control" placeholder="Input your name">
+            </div>
+            <div class="input-group">
+                <input type="text" class="passwd-filed" class="form-control" placeholder="Inpput your passwd">
+            </div>
+            <button id="fat-btn" class="btn btn-primary" data-loading-text="submit"
+                    type="button">submit
+            </button>
+        </div>
+    </div>
+
+<script>
+    $(document).ready(function () {
+        $("#fat-btn").click(function(){
+            var username = $(".name-field").val();
+            var passwd = $(".passwd-filed").val();
+            var send = { username : username, password : passwd};
+            $.ajax({
+                url:'/iniAuth',
+                type:'POST',
+                async:false,
+                data: send,
+                dataType:'json',
+                success:function(data){
+                    alert(JSON.stringify(data));
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
