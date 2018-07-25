@@ -11,4 +11,8 @@
     <select id="getUser" resultType="User">
         SELECT * FROM users WHERE username=#{username}
     </select>
+
+    <insert id="addUser" parameterType="User">
+        INSERT INTO users VALUES (username, password, salt)
+    </insert>
 </mapper>
