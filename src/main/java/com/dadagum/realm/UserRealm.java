@@ -1,30 +1,43 @@
 package com.dadagum.realm;
 
+import com.dadagum.service.UserService;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.realm.Realm;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class UserRealm implements Realm {
+public class UserRealm extends AuthorizingRealm {
+
+    @Autowired
+    private UserService userService;
+
     @Override
-    public String getName() {
-        return "FirstRealm:UserRealm";
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        return info;
     }
 
     @Override
-    public boolean supports(AuthenticationToken authenticationToken) {
-        return authenticationToken instanceof UsernamePasswordToken;
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+        String username = (String) authenticationToken.getPrincipal();
+        System.out.println("in ca : username = " + username);
+        // get password from database
+        String password = getUserPasswd(username);
+        System.out.println("password " + password);
+        // get salt from database
+        String salt = getUserSalt(username);
+        System.out.println("salt" + salt);
+        return new SimpleAuthenticationInfo(username, password, ByteSource.Util.bytes(salt), getName());
     }
 
-    @Override
-    public AuthenticationInfo getAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        String username = (String)token.getPrincipal();  //得到用户名
-        String password = new String((char[])token.getCredentials()); //得到密码
-        if(!"zhang".equals(username)) {
-            throw new UnknownAccountException(); //如果用户名错误
-        }
-        if(!"123".equals(password)) {
-            throw new IncorrectCredentialsException(); //如果密码错误
-        }
-        //如果身份认证验证成功，返回一个AuthenticationInfo实现；
-        return new SimpleAuthenticationInfo(username, password, getName());
+    public String getUserPasswd(String username){
+        return userService.getUserPasswd(username);
+    }
+
+    public String getUserSalt(String username){
+        return userService.getUserSalt(username);
     }
 }

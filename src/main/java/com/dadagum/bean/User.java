@@ -5,7 +5,15 @@ public class User {
     private String username;
     private String password;
     private String salt;
-    private int uid;
+
+    public User() {
+    }
+
+    public User(String username, String password, String salt) {
+        this.username = username;
+        this.password = password;
+        this.salt = salt;
+    }
 
     public String getUsername() {
         return username;
@@ -31,21 +39,12 @@ public class User {
         this.salt = salt;
     }
 
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
     @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", salt='" + salt + '\'' +
-                ", uid=" + uid +
                 '}';
     }
 }

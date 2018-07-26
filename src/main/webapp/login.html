@@ -32,7 +32,7 @@
             var passwd = $(".passwd-filed").val();
             var send = { username : username, password : passwd};
             $.ajax({
-                url:'/iniAuth',
+                url:'/authentication',
                 type:'POST',
                 async:false,
                 data: send,

@@ -24,4 +24,9 @@ public interface UserMapper {
      * @param user
      */
     public void addUser(User user);
+
+    public String getUserPasswd(String username);
+
+    public String getUserSalt(String username);
+
 }

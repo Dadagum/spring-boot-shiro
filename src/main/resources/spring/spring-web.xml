@@ -8,6 +8,8 @@
 
     <mvc:default-servlet-handler/>
 
-    <context:component-scan base-package="com.dadagum.controller"/>
+    <context:component-scan base-package="com.dadagum"/>
+
+    <bean class="com.dadagum.realm.UserRealm"/>
 
 </beans>
