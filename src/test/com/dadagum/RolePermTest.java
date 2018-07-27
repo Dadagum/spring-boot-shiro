@@ -2,6 +2,7 @@ package com.dadagum;
 
 import com.dadagum.mapper.RolePermMapper;
 import com.dadagum.mapper.UserRolesMapper;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,15 +18,17 @@ public class RolePermTest {
     @Autowired
     private RolePermMapper rolePermMapper;
 
+    @Test
     public void assignRole(){
-        String username = "admin";
-        String role = "role1";
+        String username = "root";
+        String role = "root";
         userRolesMapper.assignRole(username, role);
     }
 
+    @Test
     public void addRolePerm(){
-        String role = "role2";
-        String perm = "user:delete";
+        String role = "root";
+        String perm = "all";
         rolePermMapper.addRolePerm(role, perm);
     }
 }

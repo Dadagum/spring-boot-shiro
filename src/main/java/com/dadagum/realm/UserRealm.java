@@ -16,28 +16,21 @@ public class UserRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        String username = (String) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        info.setRoles(userService.getUserRoles(username));
+        info.setStringPermissions(userService.getUserPerms(username));
         return info;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String username = (String) authenticationToken.getPrincipal();
-        System.out.println("in ca : username = " + username);
         // get password from database
-        String password = getUserPasswd(username);
-        System.out.println("password " + password);
+        String password = userService.getUserPasswd(username);
         // get salt from database
-        String salt = getUserSalt(username);
-        System.out.println("salt" + salt);
+        String salt = userService.getUserSalt(username);
         return new SimpleAuthenticationInfo(username, password, ByteSource.Util.bytes(salt), getName());
     }
 
-    public String getUserPasswd(String username){
-        return userService.getUserPasswd(username);
-    }
-
-    public String getUserSalt(String username){
-        return userService.getUserSalt(username);
-    }
 }

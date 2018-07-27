@@ -30,9 +30,9 @@ public class UserTest {
 
     @Test
     public void addUser(){
-        String username = "admin3";
-        String salt = new SecureRandomNumberGenerator().nextBytes().toString();
-        String password = new SimpleHash("md5", "admin3", salt,1).toString();
+        String username = "tom";
+        String salt = new SecureRandomNumberGenerator().nextBytes().toHex();
+        String password = new SimpleHash("md5", "tom", salt,1).toString();
         User user = new User(username, password, salt);
         System.out.println(user);
         userMapper.addUser(user);
