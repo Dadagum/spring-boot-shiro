@@ -28,9 +28,9 @@
     </bean>
 
     <!-- realm -->
-    <bean id = "realm" class="com.dadagum.realm.UserRealm"  p:credentialsMatcher-ref="credentialsMatcher"/>
+    <bean id = "realm" class="com.dadagum.shiro.realm.UserRealm" p:credentialsMatcher-ref="credentialsMatcher"/>
 
     <!-- HashedCredentialsMatcher : 指定md5方法 -->
-    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher" p:hashAlgorithmName="md5" p:hashIterations="1"/>
+    <bean id="credentialsMatcher" class="com.dadagum.shiro.matcher.RetryLimitHashedCredentialsMatcher" p:hashAlgorithmName="md5" p:hashIterations="1"/>
 
 </beans>

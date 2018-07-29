@@ -1,10 +1,13 @@
 package com.dadagum.bean;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
 
     private String username;
     private String password;
     private String salt;
+    private Boolean locked = false;
 
     public User() {
     }

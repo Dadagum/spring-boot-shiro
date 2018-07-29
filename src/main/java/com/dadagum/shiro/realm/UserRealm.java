@@ -1,4 +1,4 @@
-package com.dadagum.realm;
+package com.dadagum.shiro.realm;
 
 import com.dadagum.service.UserService;
 import org.apache.shiro.authc.*;

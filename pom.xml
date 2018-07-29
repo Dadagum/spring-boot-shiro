@@ -72,7 +72,6 @@
     </resources>
   </build>
 
-
   <dependencies>
     <dependency>
       <groupId>net.sf.ehcache</groupId>

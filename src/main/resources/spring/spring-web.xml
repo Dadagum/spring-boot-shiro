@@ -10,6 +10,6 @@
 
     <context:component-scan base-package="com.dadagum"/>
 
-    <bean class="com.dadagum.realm.UserRealm"/>
+    <bean class="com.dadagum.shiro.realm.UserRealm"/>
 
 </beans>
