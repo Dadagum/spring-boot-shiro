@@ -31,6 +31,15 @@
     <bean id = "realm" class="com.dadagum.shiro.realm.UserRealm" p:credentialsMatcher-ref="credentialsMatcher"/>
 
     <!-- HashedCredentialsMatcher : 指定md5方法 -->
-    <bean id="credentialsMatcher" class="com.dadagum.shiro.matcher.RetryLimitHashedCredentialsMatcher" p:hashAlgorithmName="md5" p:hashIterations="1"/>
+    <bean id="credentialsMatcher" class="com.dadagum.shiro.matcher.RetryLimitHashedCredentialsMatcher">
+        <constructor-arg index="0" ref="cacheManager" />
+        <property name="hashAlgorithmName" value="md5" />
+        <property name="hashIterations" value="1" />
+    </bean>
+
+    <!-- cache manager -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache/ehcache.xml" />
+    </bean>
 
 </beans>

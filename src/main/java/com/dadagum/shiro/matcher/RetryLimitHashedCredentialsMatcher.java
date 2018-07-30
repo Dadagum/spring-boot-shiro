@@ -1,37 +1,47 @@
 package com.dadagum.shiro.matcher;
 
-import com.dadagum.util.RedisUtil;
+
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.apache.shiro.cache.Cache;
+import org.apache.shiro.cache.CacheManager;
+
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Component
 public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher{
 
-    @Autowired
-    private RedisUtil redisUtil;
+    private Cache<String, AtomicInteger> cache;
+
+
+    public RetryLimitHashedCredentialsMatcher(CacheManager cacheManager) {
+        cache = cacheManager.getCache("passwordRetryCache");
+    }
 
     @Override
-    public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info){
+    public boolean doCredentialsMatch(AuthenticationToken token,
+                                      AuthenticationInfo info) {
         String username = (String) token.getPrincipal();
-        // get cache
-        AtomicInteger cnt = (AtomicInteger) redisUtil.getValue(username);
-        System.out.println("in matcher : ");
-        if (cnt == null) {
-            cnt = new AtomicInteger(0);
-            redisUtil.setValue(username, cnt, 10);
+        // retry count + 1
+        AtomicInteger retryCount = cache.get(username);
+        if (retryCount == null) {
+            retryCount = new AtomicInteger(0);
+            cache.put(username, retryCount);
         }
-        if (cnt.incrementAndGet() > 2) throw new ExcessiveAttemptsException("stop trying!");
+        if (retryCount.incrementAndGet() > 5) {
+            // if retry count > 5 throw
+            throw new ExcessiveAttemptsException("stop trying!");
+        }
 
         boolean matches = super.doCredentialsMatch(token, info);
-        // login successfully
-        if (matches) redisUtil.setValue(username, null);
-        else redisUtil.setValue(username, cnt);
+        if (matches) {
+            // clear retry count
+            cache.remove(username);
+        }
         return matches;
     }
+
+
 }

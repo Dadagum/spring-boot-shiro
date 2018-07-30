@@ -46,7 +46,7 @@ public class IndexController {
            System.out.println("login successfully");
        }catch (Exception e){
            e.printStackTrace();
-           return new JsonResult<>(null, "fail", 1);
+           return new JsonResult<>(null, e.getMessage(), 1);
        }
        return new JsonResult<>(null, "success", 0);
    }
